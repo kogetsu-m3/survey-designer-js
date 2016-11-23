@@ -226,7 +226,7 @@ class Graph extends Component {
     const { state } = this.props;
     const href = "data:application/octet-stream," + encodeURIComponent(JSON.stringify(state, null, 2));
     return (
-      <div ref="graph" className={ this.state.connectMode ? "graph connect-mode" : "graph" }>
+      <div ref="graph" className={ this.state.connectMode ? "graph connect-mode" : "graph" } style={{height: '400px'}}>
         <div className="graph-controller btn-group">
           <button className="btn btn-default btn-sm" onClick={this.fit.bind(this)}><span className="glyphicon glyphicon-screenshot"></span></button>
           <button className="btn btn-default btn-sm" onClick={this.autoLayout.bind(this)}><span className="glyphicon glyphicon-th"></span></button>

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import ComponentButton from './ComponentButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import CheckboxEditor from './question_editor/CheckboxEditor'
 import * as Utils from '../../utils'
 

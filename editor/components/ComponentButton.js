@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap';
+import RaisedButton from 'material-ui/RaisedButton';
 import * as EditorActions from '../actions'
 import * as Utils from '../../utils'
 
@@ -15,7 +15,7 @@ class ComponentButton extends Component {
   render() {
     const { label, componentGroup } = this.props;
     return (
-      <Button bsStyle={ComponentButton.TYPE_MAPPING[componentGroup]} className="component-button" block onClick={this.onButtonClick.bind(this)}>{label}</Button>
+      <RaisedButton fullWidth={true} onClick={this.onButtonClick.bind(this)} label={label} />
     );
   }
 }

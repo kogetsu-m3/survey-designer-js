@@ -5,10 +5,10 @@ import { Provider } from 'react-redux'
 import EnqueteEditorApp  from './containers/EnqueteEditorApp.js'
 import configureStore from './store'
 import state from './state'
-import '../www/css/editor.scss'
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 $.getJSON('sample.json').done(json => {
-  console.log(json);
   const store = configureStore(json);
 
   const rootElement = document.getElementById('root');
