@@ -6,6 +6,7 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: {
     runtime: [ 'webpack-hot-middleware/client', './runtime/index' ],
+    mock: [ 'webpack-hot-middleware/client', './mock/index' ],
     editor: [ 'webpack-hot-middleware/client', './editor/index' ]
   },
   output: {

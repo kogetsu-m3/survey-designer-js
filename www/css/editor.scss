@@ -153,25 +153,7 @@ html, body {
 .component-button {
   margin-bottom: 5px;
 }
-/* グラフ */
-.graph {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  .graph-controller {
-    position: absolute;
-    z-index: 100;
-    right: 5px;
-    top: 5px;
-    input[type="file"] {
-      display: none;
-    }
-  }
-  &.connect-mode {
-    background-color: #eef;
-  }
-}
+
 /* ブランチエディタ */
 .branch-editor {
   .branch-editor-header {

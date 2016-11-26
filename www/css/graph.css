@@ -1,0 +1,15 @@
+.graph {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.graphController {
+  position: absolute;
+  z-index: 100;
+  right: 5px;
+  top: 5px;
+}
+.connectMode {
+  background-color: #eef;
+}

@@ -1,11 +1,23 @@
-import React, { Component, PropTypes } from 'react'
-import { cloneObj, nextFlowId, findPage, findFlow, makeCytoscapeElements } from '../../utils'
-import { connect } from 'react-redux'
-import { loadState, setElementsPosition, changePosition, selectFlow, removeEdge, removeFlow, addBranch, addPageFlow, addBranchFlow, connectFlow, clonePage } from '../actions'
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom'
+import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ActionHome from 'material-ui/svg-icons/action/home';
+import ActionOpenWith from 'material-ui/svg-icons/action/open-with';
+import ImageTransform from 'material-ui/svg-icons/image/transform';
+import FileUpload from 'material-ui/svg-icons/file/file-upload';
+import FileDownload from 'material-ui/svg-icons/file/file-download';
+import { cloneObj, nextFlowId, findPage, findFlow, makeCytoscapeElements } from '../../utils';
+import { connect } from 'react-redux';
+import { loadState, setElementsPosition, changePosition, selectFlow, removeEdge, removeFlow, addBranch, addPageFlow, addBranchFlow, connectFlow, clonePage } from '../actions';
+import styles from '../../www/css/graph.css';
 const cytoscape = require('cytoscape');
 const cycola = require('cytoscape-cola');
 const jquery = require('jquery');
 const cxtmenu = require('cytoscape-cxtmenu');
+
 
 cycola(cytoscape, cola);
 cxtmenu(cytoscape, jquery);
@@ -22,6 +34,8 @@ class Graph extends Component {
   componentDidMount() {
     this.cy = this.makeCytoscape();
     this.addEventListenerToCytoscape();
+    const rootEl = ReactDOM.findDOMNode(this);
+    rootEl.style.height = window.innerHeight - rootEl.getBoundingClientRect().top + 'px';
   }
   componentDidUpdate(prevProps, prevState) {
     const { state } = this.props;
@@ -225,14 +239,15 @@ class Graph extends Component {
   render() {
     const { state } = this.props;
     const href = "data:application/octet-stream," + encodeURIComponent(JSON.stringify(state, null, 2));
+    const graphClassName = this.state.connectMode ? [styles.graph, styles.connectMode].join(' ') : styles.graph;
+
     return (
-      <div ref="graph" className={ this.state.connectMode ? "graph connect-mode" : "graph" } style={{height: '400px'}}>
-        <div className="graph-controller btn-group">
-          <button className="btn btn-default btn-sm" onClick={this.fit.bind(this)}><span className="glyphicon glyphicon-screenshot"></span></button>
-          <button className="btn btn-default btn-sm" onClick={this.autoLayout.bind(this)}><span className="glyphicon glyphicon-th"></span></button>
-          <a className="btn btn-default btn-sm" href={href} download="enquete.json"><span className="glyphicon glyphicon-floppy-save"></span></a>
-          <input id="fileInput" type="file" onChange={this.onFileSelected.bind(this)} accept=".json"/>
-          <label htmlFor="fileInput" className="btn btn-default btn-sm" onClick={this.load.bind(this)}><span className="glyphicon glyphicon-floppy-open"></span></label>
+      <div ref="graph" className={graphClassName}>
+        <div className={styles.graphController}>
+          <FloatingActionButton mini={true} onClick={this.fit.bind(this)}><ActionOpenWith/></FloatingActionButton>
+          <FloatingActionButton mini={true} onClick={this.autoLayout.bind(this)}><ImageTransform/></FloatingActionButton>
+          <FloatingActionButton mini={true} href={href} download="enquete.json" style={{verticalAlign: 'top'}}><FileDownload/></FloatingActionButton>
+          <FloatingActionButton mini={true} containerElement="label"><FileUpload/><input type="file" onChange={this.onFileSelected.bind(this)} style={{display: 'none'}}/></FloatingActionButton>
         </div>
       </div>
     )
