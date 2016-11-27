@@ -14,7 +14,7 @@ class QuestionEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionId: props.question.id
+      questionId: 1//props.question.id
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -73,7 +73,8 @@ class QuestionEditor extends Component {
 }
 
 const stateToProps = state => ({
-  state: state
+  page: Utils.findPage(state, state.editorValues.pageId),
+  question: Utils.findQuestion(state, state.editorValues.pageId, state.editorValues.questionId),
 });
 const actionsToProps = dispatch => ({
   changeQuestionId: (pageId, oldQuestionId, newQuestionId) => dispatch(EditorActions.changeQuestionId(pageId, oldQuestionId, newQuestionId))

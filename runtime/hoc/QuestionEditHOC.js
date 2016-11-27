@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux';
 import IconButton from 'material-ui/IconButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Delete from 'material-ui/svg-icons/action/delete';
@@ -7,26 +8,22 @@ import ContentCopy from 'material-ui/svg-icons/content/content-copy';
 import Drawer from 'material-ui/Drawer';
 import styles from '../../www/css/QuestionEditHOC.css';
 import CheckboxEditor from '../../editor/components/question_editor/CheckboxEditor';
+import * as RuntimeActions from '../actions'
 
 const EDITORS = {
   CheckboxEditor,
 }
 
 export default function QuestionEditHOC(QuestionComponent) {
-  return class QuestionEditorHOC extends React.Component {
+  class QuestionEditorHOC extends React.Component {
     constructor(prop) {
       super(prop);
-      this.state = {
-        open: false
-      };
     }
     startEditMode() {
-      this.setState({open: true});
+      const { page, id, changeEditQuestion } = this.props;
+      changeEditQuestion(page.id, id);
     }
     getEditor() {
-      if (!this.state.open) {
-        return null;
-      }
       const editorClassName = QuestionComponent.name.replace(/Question/, '') + 'Editor';
       const editor = EDITORS[editorClassName];
       return React.createElement(editor, {question: this.props});
@@ -39,12 +36,20 @@ export default function QuestionEditHOC(QuestionComponent) {
             <IconButton tooltip="Copy"><ContentCopy/></IconButton>
             <IconButton tooltip="Delete"><Delete/></IconButton>
           </div>
-          <Drawer docked={false} width={500} open={this.state.open} onRequestChange={(open) => this.setState({open})}>
-            {this.getEditor()}
-          </Drawer>
           <QuestionComponent {...this.props}/>
         </div>
       );
     }
   }
+
+  const stateToProps = state => ({
+  });
+  const actionsToProps = dispatch => ({
+    changeEditQuestion: (pageId, questionId) => dispatch(RuntimeActions.changeEditQuestion(pageId, questionId))
+  });
+
+  return connect(
+    stateToProps,
+    actionsToProps
+  )(QuestionEditorHOC)
 }

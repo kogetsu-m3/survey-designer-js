@@ -357,5 +357,9 @@
   "viewSettings": {
     "graphWidth": 814,
     "hotHeight": 400
+  },
+  "editorValues": {
+    "pageId": "P001",
+    "questionId": "1"
   }
 }

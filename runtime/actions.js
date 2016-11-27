@@ -1,14 +1,18 @@
-import { NEXT_PAGE, PREV_PAGE, VALUE_CHANGE } from '../constants'
+import * as Constants from '../constants';
+
 export function nextPage() {
   return {
-    type: NEXT_PAGE
+    type: Constants.NEXT_PAGE
   };
 }
 export function prevPage() {
   return {
-    type: PREV_PAGE
+    type: Constants.PREV_PAGE
   };
 }
 export function valueChange(values) {
-  return { type: VALUE_CHANGE, values };
+  return { type: Constants.VALUE_CHANGE, values };
+}
+export function changeEditQuestion(pageId, questionId) {
+  return { type: Constants.CHANGE_EDIT_QUESTION, pageId, questionId };
 }

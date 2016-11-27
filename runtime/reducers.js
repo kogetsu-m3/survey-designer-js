@@ -1,5 +1,5 @@
-import { INIT_ALL_DEFS, SELECT_FLOW, CHANGE_DEFS, VALUE_CHANGE, NEXT_PAGE, PREV_PAGE } from '../constants'
-import { cloneObj, findFlow, findBranch } from '../utils'
+import * as Constants from '../constants';
+import { cloneObj, findFlow, findBranch } from '../utils';
 
 /**
  * branchを評価する
@@ -66,14 +66,14 @@ function nextFlowPage(state, flowId) {
 function showPage(state, action) {
   const { currentFlowId, flowStack } = state.values;
   switch (action.type) {
-    case SELECT_FLOW: {
+    case Constants.SELECT_FLOW: {
       return { currentFlowId: action.flowId, flowStack: [] };
     }
-    case NEXT_PAGE: {
+    case Constants.NEXT_PAGE: {
       const nextFlow = nextFlowPage(state, currentFlowId);
       return { currentFlowId: nextFlow.id, flowStack: [...flowStack, currentFlowId]};
     }
-    case PREV_PAGE: {
+    case Constants.PREV_PAGE: {
       let newFlowStack = [...flowStack];
       const prevFlowId = newFlowStack.pop();
       return { currentFlowId: prevFlowId, flowStack: newFlowStack };
@@ -86,7 +86,7 @@ function showPage(state, action) {
 function changeValue(state, action) {
   let inputValues = Object.assign({}, state.values.inputValues);
   switch (action.type) {
-    case VALUE_CHANGE:
+    case Constants.VALUE_CHANGE:
       return Object.assign(inputValues, action.values);
     default:
       return inputValues;
@@ -95,9 +95,9 @@ function changeValue(state, action) {
 function changeDefs(state, action) {
   let newState = cloneObj(state.defs);
   switch (action.type) {
-    case INIT_ALL_DEFS:
+    case Constants.INIT_ALL_DEFS:
       return cloneObj(action.allDefs);
-    case CHANGE_DEFS:
+    case Constants.CHANGE_DEFS:
       newState[action.defsName] = action.defs;
       return newState;
     default:
@@ -105,19 +105,32 @@ function changeDefs(state, action) {
   }
 }
 
+function changeEditorValues(editorValues, action) {
+  switch (action.type) {
+    case Constants.CHANGE_EDIT_QUESTION:
+      return {
+        pageId: action.pageId,
+        questionId: action.questionId,
+      };
+    default:
+      return editorValues;
+  }
+}
+
 export default function reducer(state, action) {
   const newState = cloneObj(state);
   try {
-    if (action.type === INIT_ALL_DEFS) {
+    if (action.type === Constants.INIT_ALL_DEFS) {
       // 初期化処理だけ別処理
       return {
         values: {
           currentFlowId: action.allDefs.flowDefs[0].id,
           flowStack: [],
-          inputValues: []
+          inputValues: [],
         },
         defs: cloneObj(action.allDefs),
-        viewSettings: newState.viewSettings
+        viewSettings: newState.viewSettings,
+        editorValues: newState.editorValues,
       };
     }
     const { currentFlowId, flowStack } = showPage(state, action);
@@ -125,10 +138,11 @@ export default function reducer(state, action) {
       values: {
         currentFlowId,
         flowStack,
-        inputValues: changeValue(state, action)
+        inputValues: changeValue(state, action),
       },
       defs: changeDefs(state, action),
-      viewSettings: newState.viewSettings
+      viewSettings: newState.viewSettings,
+      editorValues: changeEditorValues(state.editorValues, action),
     }
   } catch(e) {
     console.error(e);
