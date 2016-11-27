@@ -4,11 +4,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import TinyMCE from 'react-tinymce';
 import CheckboxEditor from './question_editor/CheckboxEditor';
-import { HelpBlock, InputGroup, Col, Form, FormGroup, ControlLabel, FormControl, Radio, Checkbox } from 'react-bootstrap';
+import TextField from 'material-ui/TextField';
 import * as EditorActions from '../actions'
 import * as RuntimeActions from '../../runtime/actions'
 import * as Utils from '../../utils'
 import * as Validator from '../validator'
+import styles from '../../www/css/QuestionEditor.css';
 
 class QuestionEditor extends Component {
   constructor(props) {
@@ -55,19 +56,10 @@ class QuestionEditor extends Component {
   render() {
     const { page, question } = this.props;
     return (
-      <Form horizontal>
-        <FormGroup validationState={this.state.validationState ? 'error' : null}>
-          <Col componentClass={ControlLabel} md={2}>質問ID</Col>
-          <Col sm={4}>
-            <InputGroup>
-              <InputGroup.Addon>{page.id}-</InputGroup.Addon>
-              <FormControl ref="questionId" type="text" value={this.state.questionId} onChange={this.onQuestionIdChanged.bind(this)}/>
-            </InputGroup>
-          </Col>
-        </FormGroup>
-
+      <div className={styles.questionContainer}>
+        <TextField floatingLabelText="質問ID" onChange={this.onQuestionIdChanged.bind(this)}/>
         {this.findEditorComponent(question.type)}
-      </Form>
+      </div>
     );
   }
 }

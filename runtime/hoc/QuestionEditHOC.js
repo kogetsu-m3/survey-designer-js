@@ -9,6 +9,7 @@ import Drawer from 'material-ui/Drawer';
 import styles from '../../www/css/QuestionEditHOC.css';
 import CheckboxEditor from '../../editor/components/question_editor/CheckboxEditor';
 import * as RuntimeActions from '../actions'
+import * as EditorActions from '../../editor/actions';
 
 const EDITORS = {
   CheckboxEditor,
@@ -20,8 +21,9 @@ export default function QuestionEditHOC(QuestionComponent) {
       super(prop);
     }
     startEditMode() {
-      const { page, id, changeEditQuestion } = this.props;
+      const { page, id, changeEditQuestion, changeLeftPaneTab } = this.props;
       changeEditQuestion(page.id, id);
+      changeLeftPaneTab('questionEditor');
     }
     getEditor() {
       const editorClassName = QuestionComponent.name.replace(/Question/, '') + 'Editor';
@@ -45,7 +47,8 @@ export default function QuestionEditHOC(QuestionComponent) {
   const stateToProps = state => ({
   });
   const actionsToProps = dispatch => ({
-    changeEditQuestion: (pageId, questionId) => dispatch(RuntimeActions.changeEditQuestion(pageId, questionId))
+    changeEditQuestion: (pageId, questionId) => dispatch(RuntimeActions.changeEditQuestion(pageId, questionId)),
+    changeLeftPaneTab: value => dispatch(EditorActions.changeLeftPaneTab(value)),
   });
 
   return connect(

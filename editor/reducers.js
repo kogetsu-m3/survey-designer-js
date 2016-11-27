@@ -59,6 +59,10 @@ function removeEdge(state, sourceFlowId, targetFlowId) {
   }
   return state;
 }
+function changeLeftPaneTab(state, value) {
+  state.editorValues.selectedLeftPaneTab = value;
+  return state;
+}
 function changeCustomPage(state, customPageId, html) {
   let customPage = state.defs.customPageDefs.find((def) => {
     return def.id === customPageId;
@@ -286,6 +290,8 @@ function editorReducer(state, action) {
     return resizeGraphPane(newState, action.graphWidth);
   case C.RESIZE_HOT_PANE:
     return resizeHotPane(newState, action.hotHeight);
+  case C.CHANGE_LEFT_PANE_TAB:
+    return changeLeftPaneTab(newState, action.value);
   case C.CHANGE_CUSTOM_PAGE:
     return changeCustomPage(newState, action.customPageId, action.html);
   case C.CHANGE_CODEMIRROR:

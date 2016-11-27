@@ -26,11 +26,13 @@ import * as Utils from '../../utils';
 export default class EnqueteEditorApp extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    };
   }
   componentDidMount() {
     this.resizeGraphPane();
+  }
+  handleChangeTab(value) {
+    const { changeLeftPaneTab } = this.props;
+    changeLeftPaneTab(value);
   }
   resizeGraphPane(e) {
     const { resizeGraphPane } = this.props;
@@ -39,7 +41,7 @@ export default class EnqueteEditorApp extends Component {
   }
   render() {
     const _this = this;
-    const { state, actions } = this.props;
+    const { state, actions, selectedLeftPaneTab } = this.props;
     const splitPaneSize = {
       minSize: 100,
       defaultSize: 400
@@ -60,6 +62,7 @@ export default class EnqueteEditorApp extends Component {
         }
       }
     });
+
     // TODO SplitPaneをiframeに対応する
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -67,15 +70,15 @@ export default class EnqueteEditorApp extends Component {
           <SplitPane split="vertical" {...splitPaneSize} onDragFinished={this.resizeGraphPane.bind(this)}>
             <div>
               <AppBar title="React Survey"/>
-              <Tabs ref="left">
-                <Tab icon={<FontIcon className="material-icons">call_split</FontIcon>}><Graph actions={actions}/></Tab>
-                <Tab icon={<FontIcon className="material-icons">list</FontIcon>}><ComponentList/></Tab>
-                <Tab icon={<FontIcon className="material-icons">settings</FontIcon>}><PageSetting/></Tab>
-                <Tab icon={<ModeEdit/>}><QuestionEditor/></Tab>
+              <Tabs ref="left" value={selectedLeftPaneTab} onChange={this.handleChangeTab.bind(this)}>
+                <Tab icon={<FontIcon className="material-icons">call_split</FontIcon>} value="graph"><Graph actions={actions}/></Tab>
+                <Tab icon={<FontIcon className="material-icons">list</FontIcon>} value="componentList"><ComponentList/></Tab>
+                <Tab icon={<FontIcon className="material-icons">settings</FontIcon>} value="pageSetting"><PageSetting/></Tab>
+                <Tab icon={<ModeEdit/>} value="questionEditor"><QuestionEditor/></Tab>
               </Tabs>
             </div>
             <div>
-              <AppBar iconElementLeft={<div/>}/>
+              <AppBar title="Design Preview" iconElementLeft={<div/>}/>
               <EnqueteRuntimeApp ref="right"/>
             </div>
           </SplitPane>
@@ -86,12 +89,14 @@ export default class EnqueteEditorApp extends Component {
 }
 
 const stateToProps = state => ({
-  state: state
+  state: state,
+  selectedLeftPaneTab: state.editorValues.selectedLeftPaneTab,
 });
 const actionsToProps = dispatch => ({
   resizeGraphPane: width => dispatch(EditorActions.resizeGraphPane(width)),
   resizeEditorPane: height => dispatch(EditorActions.resizeEditorPane(height)),
-  changeCodemirror: value => dispatch(EditorActions.changeCodemirror(value))
+  changeCodemirror: value => dispatch(EditorActions.changeCodemirror(value)),
+  changeLeftPaneTab: value => dispatch(EditorActions.changeLeftPaneTab(value)),
 });
 
 export default connect(

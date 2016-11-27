@@ -12,6 +12,9 @@ export function changeDefs(defsName, defs) {
     defs: defs
   };
 }
+export function changeLeftPaneTab(value) {
+  return { type: C.CHANGE_LEFT_PANE_TAB, value };
+}
 /********************** Graph関連 **********************/
 export function selectFlow(flowId) {
   return { type: C.SELECT_FLOW, from: C.GRAPH, flowId }

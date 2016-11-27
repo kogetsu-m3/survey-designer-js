@@ -1,11 +1,15 @@
-import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { Checkbox, Glyphicon } from 'react-bootstrap';
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import Checkbox from 'material-ui/Checkbox';
+import IconButton from 'material-ui/IconButton';
+import Add from 'material-ui/svg-icons/content/add';
+import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
-import * as EditorActions from '../actions'
-import * as RuntimeActions from '../../runtime/actions'
-import * as Utils from '../../utils'
+import * as EditorActions from '../actions';
+import * as RuntimeActions from '../../runtime/actions';
+import * as Utils from '../../utils';
+import styles from '../../www/css/ChoiceEditor.css';
 
 class ChoiceEditor extends Component {
   constructor(props) {
@@ -95,7 +99,6 @@ class ChoiceEditor extends Component {
   handleChangeOption(index, e) {
     const { page, question } = this.props;
     const choiceValue = this.getChoiceValue();
-    console.log(choiceValue);
     this.props.handleChoiceChange(choiceValue);
   }
   renderChoiceEditorRow(choice, index, choices) {
@@ -104,6 +107,12 @@ class ChoiceEditor extends Component {
       visibility: choices.length == 1 ? 'hidden' : ''
     }
     const { plainText } = this.props;
+    const checkboxStyle = {
+      display: 'inline-block',
+      width: '24px',
+      height: '24px',
+      padding: '0',
+    };
     const editor = plainText ? <input type="text" className="form-control plain-text-choice"
       onKeyup={this.handleChangeQuestionChoices.bind(this, index)}
       onChange={this.handleChangeQuestionChoices.bind(this, index)}
@@ -125,16 +134,16 @@ class ChoiceEditor extends Component {
           />;
 
     return (
-      <div className="choice-editor-row" key={"choice-editor-row-" + index}>
-        <div className="choice-editor-tinymce-container">
+      <div className={styles.choiceEditorRow} key={"choice-editor-row-" + index}>
+        <div className={styles.choiceEditorTinymceContainer}>
           {editor}
         </div>
-        <div className="choice-editor-controller">
-          <Checkbox className="option free-input" onChange={this.handleChangeOption.bind(this, index)} inline>自由記入</Checkbox>
-          <Checkbox className="option free-input-required" onChange={this.handleChangeOption.bind(this, index)} inline>自由記入必須</Checkbox>
-          <Checkbox className="option exclusion" onChange={this.handleChangeOption.bind(this, index)} inline>排他</Checkbox>
-          <Glyphicon className="clickable icon-button text-info" glyph="plus-sign" onClick={this.handleClickAddButton.bind(this, index)}/>
-          <Glyphicon className="clickable icon-button text-danger" glyph="minus-sign" onClick={this.handleClickMinusButton.bind(this, index)}/>
+        <div>
+          <Checkbox onChange={this.handleChangeOption.bind(this, index)} label="" style={checkboxStyle}/>
+          <Checkbox onChange={this.handleChangeOption.bind(this, index)} label="" style={checkboxStyle}/>
+          <Checkbox onChange={this.handleChangeOption.bind(this, index)} label="" style={checkboxStyle}/>
+          <IconButton mini={true} style={checkboxStyle}><Add /></IconButton>
+          <IconButton mini={true} style={checkboxStyle}><DeleteForever/></IconButton>
         </div>
       </div>
     );

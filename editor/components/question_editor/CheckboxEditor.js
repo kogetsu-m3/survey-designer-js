@@ -1,15 +1,20 @@
-import React, { Component, PropTypes } from 'react'
-import LinkedStateMixin from 'react-addons-linked-state-mixin'
-import ReactMixin from 'react-mixin'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, { Component, PropTypes } from 'react';
+import LinkedStateMixin from 'react-addons-linked-state-mixin';
+import ReactMixin from 'react-mixin';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import TinyMCE from 'react-tinymce';
+import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import ChoiceEditor from '../ChoiceEditor';
-import { HelpBlock, InputGroup, Row, Col, Form, FormGroup, ControlLabel, FormControl, Radio, Checkbox } from 'react-bootstrap';
-import * as EditorActions from '../../actions'
-import * as RuntimeActions from '../../../runtime/actions'
-import * as Utils from '../../../utils'
-import uuid from 'node-uuid'
+import * as EditorActions from '../../actions';
+import * as RuntimeActions from '../../../runtime/actions';
+import * as Utils from '../../../utils';
+import uuid from 'node-uuid';
+import formStyles from '../../../www/css/form.css';
 
 class CheckboxEditor extends Component {
   constructor(props) {
@@ -79,67 +84,45 @@ class CheckboxEditor extends Component {
 
     return (
       <div>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={2}>並び方向</Col>
-          <Col md={10}>
-            <Radio inputRef={ref => { this.directionVertical = ref }} name="direction" onChange={this.handleCheckboxEditorChange.bind(this)} checked={question.vertical} inline>Vertical</Radio>
-            <Radio inputRef={ref => { this.directionHorizontal = ref }} name="direction" onChange={this.handleCheckboxEditorChange.bind(this)} checked={!question.vertical} inline>Horizontal</Radio>
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={2}>質問タイトル</Col>
-          <Col md={10}>
-            <TinyMCE id={`${this.uuid}-questionTitleEditor`}
-              config={
-                {
-                  menubar: '',
-                  toolbar: 'styleselect fontselect fontsizeselect bullist numlist outdent indent blockquote removeformat link unlink image visualchars fullscreen table forecolor backcolor',
-                  plugins: 'table contextmenu textcolor paste fullscreen lists image link',
-                  inline: false,
-                  height: 40,
-                  statusbar: false
-                }
-              }
-              onKeyup={this.handleTinyMCEChange.bind(this, 'title')}
-              onChange={this.handleTinyMCEChange.bind(this, 'title')}
-              content={question.title}
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={2}>補足</Col>
-          <Col md={10}>
-            <TinyMCE id={`${this.uuid}-questionBeforeNoteEditor`}
-              config={
-                {
-                  menubar: '',
-                  toolbar: 'styleselect fontselect fontsizeselect bullist numlist outdent indent blockquote removeformat link unlink image visualchars fullscreen table forecolor backcolor',
-                  plugins: 'table contextmenu textcolor paste fullscreen lists image link',
-                  inline: false,
-                  height: 40,
-                  statusbar: false
-                }
-              }
-              onKeyup={this.handleTinyMCEChange.bind(this, 'beforeNote')}
-              onChange={this.handleTinyMCEChange.bind(this, 'beforeNote')}
-              content={question.beforeNote}
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={2}>選択肢</Col>
-          <Col md={10}>
-            <ChoiceEditor page={page} question={question} choices={choices} plainText={plainText} handleChoiceChange={this.handleChoiceChange.bind(this)}/>
-          </Col>
-        </FormGroup>
+        <h4 className={formStyles.formTitle}>質問タイトル</h4>
+        <TinyMCE id={`${this.uuid}-questionTitleEditor`}
+          config={
+            {
+              menubar: '',
+              toolbar: 'styleselect fontselect fontsizeselect bullist numlist outdent indent blockquote removeformat link unlink image visualchars fullscreen table forecolor backcolor',
+              plugins: 'table contextmenu textcolor paste fullscreen lists image link',
+              inline: false,
+              height: 40,
+              statusbar: false
+            }
+          }
+          onKeyup={this.handleTinyMCEChange.bind(this, 'title')}
+          onChange={this.handleTinyMCEChange.bind(this, 'title')}
+          content={question.title}
+        />
+        <h4 className={formStyles.formTitle}>補足</h4>
+        <TinyMCE id={`${this.uuid}-questionBeforeNoteEditor`}
+          config={
+            {
+              menubar: '',
+              toolbar: 'styleselect fontselect fontsizeselect bullist numlist outdent indent blockquote removeformat link unlink image visualchars fullscreen table forecolor backcolor',
+              plugins: 'table contextmenu textcolor paste fullscreen lists image link',
+              inline: false,
+              height: 40,
+              statusbar: false
+            }
+          }
+          onKeyup={this.handleTinyMCEChange.bind(this, 'beforeNote')}
+          onChange={this.handleTinyMCEChange.bind(this, 'beforeNote')}
+          content={question.beforeNote}
+        />
+        <h4 className={formStyles.formTitle}>選択肢</h4>
+        <ChoiceEditor page={page} question={question} choices={choices} plainText={plainText} handleChoiceChange={this.handleChoiceChange.bind(this)}/>
 
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={2}>ランダム制御</Col>
-          <Col md={10}>
-            <Checkbox>選択肢の表示順をランダム表示</Checkbox>
-            <Checkbox>最後の選択肢は固定</Checkbox>
-          </Col>
-        </FormGroup>
+        <h4 className={formStyles.formTitle}>オプション</h4>
+        <Toggle label="縦に並べる" labelPosition="right" onChange={this.handleCheckboxEditorChange.bind(this)}/>
+        <Toggle label="選択肢の表示順をランダム表示" labelPosition="right" onChange={this.handleCheckboxEditorChange.bind(this)}/>
+        <Toggle label="ランダム制御" labelPosition="right" onChange={this.handleCheckboxEditorChange.bind(this)}/>
       </div>
     );
   }

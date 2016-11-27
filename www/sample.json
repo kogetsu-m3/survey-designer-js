@@ -360,6 +360,7 @@
   },
   "editorValues": {
     "pageId": "P001",
-    "questionId": "1"
+    "questionId": "1",
+    "selectedLeftPaneTab": "graph"
   }
 }
