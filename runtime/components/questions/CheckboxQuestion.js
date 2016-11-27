@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import * as Utils from '../../../utils'
-import QuestionContainer from '../QuestionContainer'
 
 export default class CheckboxQuestion extends Component {
   constructor(props) {
@@ -51,16 +50,14 @@ export default class CheckboxQuestion extends Component {
   render() {
     const { title, beforeNote, afterNote, inputValues } = this.props;
     return (
-      <QuestionContainer>
-        <div className={this.constructor.name}>
-          <h3 className="question-title" dangerouslySetInnerHTML={{__html: Utils.r(title, inputValues)}} />
-          <div className="beforeNote" dangerouslySetInnerHTML={{__html: Utils.r(beforeNote, inputValues)}} />
-          <div className="choices">
-            {this.makeItems()}
-          </div>
-          <div className="beforeNote" dangerouslySetInnerHTML={{__html: Utils.r(afterNote, inputValues)}} />
+      <div className={this.constructor.name}>
+        <h3 className="question-title" dangerouslySetInnerHTML={{__html: Utils.r(title, inputValues)}} />
+        <div className="beforeNote" dangerouslySetInnerHTML={{__html: Utils.r(beforeNote, inputValues)}} />
+        <div className="choices">
+          {this.makeItems()}
         </div>
-      </QuestionContainer>
+        <div className="beforeNote" dangerouslySetInnerHTML={{__html: Utils.r(afterNote, inputValues)}} />
+      </div>
     );
   }
 }
@@ -75,3 +72,4 @@ CheckboxQuestion.propTypes = {
   choices: PropTypes.array.isRequired,
   vertical: PropTypes.bool.isRequired,
 };
+

@@ -1,15 +1,16 @@
-import React, { Component, PropTypes } from 'react'
-import ReactDOM from 'react-dom'
-import { connect } from 'react-redux'
-import InvalidTypeQuestion from '../components/questions/InvalidTypeQuestion'
-import TextQuestion from '../components/questions/TextQuestion'
-import TextareaQuestion from '../components/questions/TextareaQuestion'
-import CheckboxQuestion from '../components/questions/CheckboxQuestion'
-import RadioQuestion from '../components/questions/RadioQuestion'
-import SelectQuestion from '../components/questions/SelectQuestion'
-import MatrixQuestion from '../components/questions/MatrixQuestion'
-import { nextPage, prevPage, valueChange } from '../actions'
-import { findQuestions, findCustomPage, r } from '../../utils'
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import InvalidTypeQuestion from '../components/questions/InvalidTypeQuestion';
+import TextQuestion from '../components/questions/TextQuestion';
+import TextareaQuestion from '../components/questions/TextareaQuestion';
+import CheckboxQuestion from '../components/questions/CheckboxQuestion';
+import RadioQuestion from '../components/questions/RadioQuestion';
+import SelectQuestion from '../components/questions/SelectQuestion';
+import MatrixQuestion from '../components/questions/MatrixQuestion';
+import { nextPage, prevPage, valueChange } from '../actions';
+import { findQuestions, findCustomPage, r } from '../../utils';
+import QuestionEditHOC from '../hoc/QuestionEditHOC';
 
 class Page extends Component {
   componentDidMount() {
@@ -119,7 +120,8 @@ class Page extends Component {
           break;
       }
       const key = `${page.id}_${index + 1}`;
-      return <div className="question" key={key}>{ React.createElement(component, { id: key, page, inputValues, ...q }) }</div>
+      const wrappedComponent = QuestionEditHOC(component);
+      return <div className="question" key={key}>{ React.createElement(wrappedComponent, { id: key, page, inputValues, ...q }) }</div>
     });
   }
   render() {
